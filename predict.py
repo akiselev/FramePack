@@ -36,24 +36,26 @@ class Predictor(BasePredictor):
         dtype_transformer = torch.bfloat16
         dtype_others = torch.float16
 
+        MODEL_DIR = "models"
+
         self.text_encoder = LlamaModel.from_pretrained(
-            "hunyuanvideo-community/HunyuanVideo", subfolder='text_encoder', torch_dtype=dtype_others).to(DEVICE)
+            os.path.join(MODEL_DIR, "text_encoder"), torch_dtype=dtype_others).to(DEVICE)
         self.text_encoder_2 = CLIPTextModel.from_pretrained(
-            "hunyuanvideo-community/HunyuanVideo", subfolder='text_encoder_2', torch_dtype=dtype_others).to(DEVICE)
+            os.path.join(MODEL_DIR, "text_encoder_2"), torch_dtype=dtype_others).to(DEVICE)
         self.tokenizer = LlamaTokenizerFast.from_pretrained(
-            "hunyuanvideo-community/HunyuanVideo", subfolder='tokenizer')
+            os.path.join(MODEL_DIR, "tokenizer"))
         self.tokenizer_2 = CLIPTokenizer.from_pretrained(
-            "hunyuanvideo-community/HunyuanVideo", subfolder='tokenizer_2')
+            os.path.join(MODEL_DIR, "tokenizer_2"))
         self.vae = AutoencoderKLHunyuanVideo.from_pretrained(
-            "hunyuanvideo-community/HunyuanVideo", subfolder='vae', torch_dtype=dtype_others).to(DEVICE)
+            os.path.join(MODEL_DIR, "vae"), torch_dtype=dtype_others).to(DEVICE)
 
         self.feature_extractor = SiglipImageProcessor.from_pretrained(
-            "lllyasviel/flux_redux_bfl", subfolder='feature_extractor')
+            os.path.join(MODEL_DIR, "feature_extractor"))
         self.image_encoder = SiglipVisionModel.from_pretrained(
-            "lllyasviel/flux_redux_bfl", subfolder='image_encoder', torch_dtype=dtype_others).to(DEVICE)
+            os.path.join(MODEL_DIR, "image_encoder"), torch_dtype=dtype_others).to(DEVICE)
 
         self.transformer = HunyuanVideoTransformer3DModelPacked.from_pretrained(
-            'lllyasviel/FramePackI2V_HY', torch_dtype=dtype_transformer).to(DEVICE)
+            os.path.join(MODEL_DIR, "transformer"), torch_dtype=dtype_transformer).to(DEVICE)
 
         self.vae.eval()
         self.text_encoder.eval()
