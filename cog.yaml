@@ -1,0 +1,16 @@
+build:
+  python_version: "3.10" # Or match the specific version you developed with
+  python_packages:
+    - "torch==2.3.1"
+    - "torchvision"
+    - "torchaudio"
+    - "diffusers==0.29.2"
+    - "transformers==4.41.2"
+    - "accelerate==0.31.0"
+    - "einops"
+    - "safetensors"
+    - "numpy"
+    - "Pillow"
+  gpu: true
+
+predict: "predict.py:Predictor"
